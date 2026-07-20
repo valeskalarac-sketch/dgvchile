@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DGV Chile — Recursos</title>
+  <meta name="theme-color" content="#131313">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    .resource-card { display:flex; align-items:center; gap:12px; background:var(--color-surface-container-low); border:1px solid var(--color-outline-variant); border-radius:14px; padding:14px; margin:0 16px 10px; cursor:pointer; transition:border-color .15s; }
+    .resource-card:hover { border-color:var(--color-primary); }
+    .resource-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; font-weight:700; color:#fff; }
+    .cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; padding:0 16px 16px; }
+    .cat-card { background:var(--color-surface-container); border:1px solid var(--color-outline-variant); border-radius:12px; padding:14px; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:10px; }
+    .cat-card:hover { border-color:var(--color-primary); background:var(--color-surface-container-high); }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <span class="top-header-title">Recursos</span>
+    <div style="margin-left:auto">
+      <button class="btn-icon" aria-label="Filtrar">
+        <span class="material-symbols-outlined">tune</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div style="padding:12px 16px 0">
+      <div class="search-wrapper">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="search" class="search-bar" placeholder="Buscar tutoriales, plantillas..." id="resource-search">
+      </div>
+    </div>
+
+    <!-- Categorías -->
+    <div style="padding:16px 16px 8px">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-outline);margin-bottom:10px">Categorías</div>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="filterResources('Tutoriales',this)">
+        <span class="material-symbols-outlined icon-filled" style="color:#ff6b6b;font-size:24px">play_circle</span>
+        <div>
+          <div class="text-title-sm">Tutoriales</div>
+          <div class="text-label text-muted">12 recursos</div>
+        </div>
+      </div>
+      <div class="cat-card" onclick="filterResources('Plantillas',this)">
+        <span class="material-symbols-outlined icon-filled" style="color:#4ecdc4;font-size:24px">layers</span>
+        <div>
+          <div class="text-title-sm">Plantillas</div>
+          <div class="text-label text-muted">8 recursos</div>
+        </div>
+      </div>
+      <div class="cat-card" onclick="filterResources('Herramientas',this)">
+        <span class="material-symbols-outlined icon-filled" style="color:#45b7d1;font-size:24px">build</span>
+        <div>
+          <div class="text-title-sm">Herramientas</div>
+          <div class="text-label text-muted">15 recursos</div>
+        </div>
+      </div>
+      <div class="cat-card" onclick="filterResources('todos',this)">
+        <span class="material-symbols-outlined icon-filled" style="color:var(--color-primary);font-size:24px">grid_view</span>
+        <div>
+          <div class="text-title-sm">Todos</div>
+          <div class="text-label text-muted">35 recursos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros horizontales -->
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none" id="cat-chips">
+      <button class="chip active" onclick="filterResources('todos',this)">Todos</button>
+      <button class="chip" onclick="filterResources('Tutoriales',this)">Tutoriales</button>
+      <button class="chip" onclick="filterResources('Plantillas',this)">Plantillas</button>
+      <button class="chip" onclick="filterResources('Herramientas',this)">Herramientas</button>
+    </div>
+
+    <!-- Lista de recursos -->
+    <div id="resources-list"></div>
+  </main>
+
+  <div id="bottom-nav" data-page="comunidad"></div>
+  <script src="js/app.js"></script>
+  <script>
+    const fmtIcons = { PDF:'picture_as_pdf', ZIP:'folder_zip', Figma:'brush' };
+    const fmtColors = { PDF:'#ff6b6b', ZIP:'#f9ca24', Figma:'#7c3aed' };
+
+    function renderResources(items) {
+      document.getElementById('resources-list').innerHTML = items.map(r => `
+        <div class="resource-card" onclick="showToast('Descargando: ${r.titulo}','download')">
+          <div class="resource-icon" style="background:${r.color}22;border:1px solid ${r.color}44">
+            <span class="material-symbols-outlined icon-filled" style="color:${r.color};font-size:22px">${fmtIcons[r.formato]||'description'}</span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="text-title-sm" style="margin-bottom:2px">${r.titulo}</div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span class="badge badge-surface">${r.formato}</span>
+              <span class="text-label text-muted">${r.peso}</span>
+              <span class="badge" style="background:rgba(255,186,32,.1);color:var(--color-primary);font-size:10px">${r.categoria}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button class="btn-icon" style="width:34px;height:34px" onclick="event.stopPropagation();this.querySelector('span').classList.toggle('icon-filled');showToast('Guardado','bookmark')" aria-label="Guardar">
+              <span class="material-symbols-outlined ${r.guardado?'icon-filled':''}" style="font-size:18px">bookmark${r.guardado?'':' _border'}</span>
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showToast('Descargando…','download')" style="padding:7px 10px">
+              <span class="material-symbols-outlined" style="font-size:16px">download</span>
+            </button>
+          </div>
+        </div>`).join('');
+    }
+
+    function filterResources(cat, el) {
+      document.querySelectorAll('#cat-chips .chip').forEach(c => c.classList.remove('active'));
+      if (el.classList.contains('chip')) el.classList.add('active');
+      renderResources(cat === 'todos' ? DATA.recursos : DATA.recursos.filter(r => r.categoria === cat));
+    }
+
+    renderResources(DATA.recursos);
+
+    document.getElementById('resource-search').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      renderResources(DATA.recursos.filter(r => r.titulo.toLowerCase().includes(q) || r.categoria.toLowerCase().includes(q)));
+    });
+  </script>
+</body>
+</html>

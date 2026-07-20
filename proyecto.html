@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DGV Chile — Proyecto</title>
+  <meta name="theme-color" content="#131313">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    .img-carousel { width:100%; aspect-ratio:4/3; object-fit:cover; }
+    .comment-item { display:flex; gap:10px; margin-bottom:16px; }
+    .comment-body { background:var(--color-surface-container); border-radius:12px; padding:10px 12px; flex:1; }
+    .comment-input-row { display:flex; gap:10px; align-items:center; padding:12px 16px; background:var(--color-surface-container-low); border-top:1px solid var(--color-outline-variant); position:sticky; bottom:0; }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <button class="btn-icon" onclick="history.back()" aria-label="Volver">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn-icon" onclick="showToast('Guardado','bookmark')" aria-label="Guardar">
+        <span class="material-symbols-outlined">bookmark_border</span>
+      </button>
+      <button class="btn-icon" onclick="showToast('Enlace copiado','link')" aria-label="Compartir">
+        <span class="material-symbols-outlined">share</span>
+      </button>
+    </div>
+  </header>
+
+  <main style="padding-bottom:80px">
+    <!-- Autor header -->
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 16px">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=catalina&backgroundColor=ffd5dc&radius=50&size=40"
+           class="avatar avatar-sm" alt="Catalina P." onclick="window.location='perfil.html'" style="cursor:pointer">
+      <div style="flex:1">
+        <div class="text-title-sm">Catalina P.</div>
+        <div class="text-label text-muted">hace 3 horas</div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="this.textContent='Siguiendo';this.classList.remove('btn-primary');this.classList.add('btn-secondary');showToast('Siguiendo a Catalina','person_add')">Seguir</button>
+    </div>
+
+    <!-- Imagen principal -->
+    <img src="https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?w=800&q=85"
+         class="img-carousel" alt="Identidad para Nativa" id="main-img">
+
+    <!-- Miniaturas -->
+    <div style="display:flex;gap:6px;padding:8px 16px">
+      <img src="https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?w=200&q=60" style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid var(--color-primary)" onclick="document.getElementById('main-img').src=this.src.replace('w=200','w=800')">
+      <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=200&q=60" style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent" onclick="document.getElementById('main-img').src=this.src.replace('w=200','w=800')">
+      <img src="https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=200&q=60" style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent" onclick="document.getElementById('main-img').src=this.src.replace('w=200','w=800')">
+    </div>
+
+    <!-- Info del proyecto -->
+    <div style="padding:8px 16px 16px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge badge-gold">Branding</span>
+        <span class="badge badge-surface">Identidad Visual</span>
+        <span class="badge badge-surface">Packaging</span>
+      </div>
+      <h1 class="text-headline" style="margin-bottom:8px">Identidad para Nativa</h1>
+      <p class="text-body-md" style="color:var(--color-secondary);line-height:1.7;margin-bottom:16px">
+        Proyecto de identidad visual para marca de productos naturales. Enfoque en sostenibilidad y conexión con la naturaleza. 
+        Desarrollamos un sistema de marca completo que incluye logotipo, paleta cromática, tipografía y sistema de packaging.
+      </p>
+
+      <!-- Acciones sociales -->
+      <div style="display:flex;align-items:center;gap:20px;padding:12px 0;border-top:1px solid var(--color-outline-variant);border-bottom:1px solid var(--color-outline-variant);margin-bottom:20px">
+        <button style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--color-outline);font-family:inherit;font-size:14px;cursor:pointer;font-weight:500"
+          onclick="const s=this.querySelector('span');s.classList.toggle('icon-filled');s.style.color=s.classList.contains('icon-filled')?'#ff6b6b':'';this.childNodes[1].textContent=s.classList.contains('icon-filled')?' 257':' 256'">
+          <span class="material-symbols-outlined" style="font-size:22px">favorite</span> 256
+        </button>
+        <button style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--color-outline);font-family:inherit;font-size:14px;cursor:pointer;font-weight:500"
+          onclick="document.querySelector('.comment-input-row input').focus()">
+          <span class="material-symbols-outlined" style="font-size:22px">chat_bubble_outline</span> 18
+        </button>
+        <button style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--color-outline);font-family:inherit;font-size:14px;cursor:pointer;font-weight:500;margin-left:auto"
+          onclick="showToast('Enlace copiado','link')">
+          <span class="material-symbols-outlined" style="font-size:22px">share</span> Compartir
+        </button>
+      </div>
+
+      <!-- Comentarios -->
+      <div class="text-title-sm" style="margin-bottom:16px">Comentarios (18)</div>
+      <div id="comments-list">
+        <div class="comment-item">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=matias&backgroundColor=c0aede&radius=50&size=36" class="avatar avatar-sm">
+          <div>
+            <div class="comment-body">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span class="text-title-sm">Matías C.</span>
+                <span class="text-label text-muted">hace 2 horas</span>
+              </div>
+              <div class="text-body-sm" style="color:var(--color-secondary);line-height:1.6">¡Buenísimo proyecto! Me encanta la paleta de colores 🌿</div>
+            </div>
+            <div style="display:flex;gap:12px;padding:6px 4px">
+              <button style="font-size:12px;color:var(--color-outline);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500" onclick="showToast('Me gusta','favorite')">❤️ 2</button>
+              <button style="font-size:12px;color:var(--color-outline);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500">Responder</button>
+            </div>
+          </div>
+        </div>
+        <div class="comment-item">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=sofia2&backgroundColor=ffd5dc&radius=50&size=36" class="avatar avatar-sm">
+          <div>
+            <div class="comment-body">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span class="text-title-sm">Sofía M.</span>
+                <span class="text-label text-muted">hace 5 horas</span>
+              </div>
+              <div class="text-body-sm" style="color:var(--color-secondary);line-height:1.6">¿Qué tipografía usaste para el logotipo? Se ve increíble.</div>
+            </div>
+            <div style="display:flex;gap:12px;padding:6px 4px">
+              <button style="font-size:12px;color:var(--color-outline);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500">❤️ 0</button>
+              <button style="font-size:12px;color:var(--color-outline);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500">Responder</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Input comentario -->
+  <div class="comment-input-row">
+    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=vale&backgroundColor=b6e3f4&radius=50&size=32" class="avatar" style="width:32px;height:32px" alt="Vale">
+    <input type="text" class="input-field" placeholder="Escribe un comentario..." style="flex:1;padding:9px 14px;border-radius:999px" id="comment-input"
+      onkeydown="if(event.key==='Enter'&&this.value.trim()){addComment(this.value);this.value=''}">
+    <button class="btn-icon" onclick="const i=document.getElementById('comment-input');if(i.value.trim()){addComment(i.value);i.value=''}" aria-label="Enviar">
+      <span class="material-symbols-outlined" style="color:var(--color-primary)">send</span>
+    </button>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    function addComment(text) {
+      const list = document.getElementById('comments-list');
+      const div = document.createElement('div');
+      div.className = 'comment-item page-enter';
+      div.innerHTML = `
+        <img src="${avatarUrl('vale',36)}" class="avatar avatar-sm" alt="Vale">
+        <div>
+          <div class="comment-body">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span class="text-title-sm">Tú</span>
+              <span class="text-label text-muted">ahora</span>
+            </div>
+            <div class="text-body-sm" style="color:var(--color-secondary);line-height:1.6">${text}</div>
+          </div>
+        </div>`;
+      list.appendChild(div);
+      div.scrollIntoView({behavior:'smooth'});
+      showToast('Comentario publicado','check_circle');
+    }
+  </script>
+</body>
+</html>

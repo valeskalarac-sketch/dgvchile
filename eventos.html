@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DGV Chile — Eventos</title>
+  <meta name="theme-color" content="#131313">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    .event-card { display:flex; gap:14px; background:var(--color-surface-container-low); border:1px solid var(--color-outline-variant); border-radius:14px; padding:14px; margin:0 16px 10px; cursor:pointer; transition:border-color .15s; }
+    .event-card:hover { border-color:var(--color-primary); }
+    .event-date { flex-shrink:0; width:52px; text-align:center; background:var(--color-surface-container); border-radius:10px; padding:8px 4px; }
+    .event-day { font-size:22px; font-weight:800; color:var(--color-primary); line-height:1; }
+    .event-month { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--color-outline); margin-top:2px; }
+    .tipo-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:500; padding:3px 8px; border-radius:6px; }
+    .tipo-Workshop { background:rgba(255,186,32,.15); color:var(--color-primary); }
+    .tipo-Charla   { background:rgba(76,175,80,.15);  color:#4caf50; }
+    .tipo-Meetup   { background:rgba(33,150,243,.15); color:#2196f3; }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <span class="top-header-title">Eventos</span>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn-icon" aria-label="Filtrar">
+        <span class="material-symbols-outlined">tune</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <div style="padding:12px 16px 0">
+      <div class="search-wrapper">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="search" class="search-bar" placeholder="Buscar eventos...">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0;padding:12px 16px 0;border-bottom:1px solid var(--color-outline-variant);margin-bottom:16px">
+      <button class="c-tab" style="padding:10px 20px;font-size:13px;font-weight:600;color:var(--color-primary);border-bottom:2px solid var(--color-primary);background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;font-family:inherit">Próximos</button>
+      <button class="c-tab" style="padding:10px 20px;font-size:13px;font-weight:600;color:var(--color-outline);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;font-family:inherit" onclick="showToast('Próximamente','event')">Guardados</button>
+    </div>
+
+    <div id="events-list"></div>
+  </main>
+
+  <div id="bottom-nav" data-page="comunidad"></div>
+  <script src="js/app.js"></script>
+  <script>
+    const list = document.getElementById('events-list');
+    DATA.eventos.forEach(ev => {
+      list.innerHTML += `
+      <div class="event-card" onclick="showToast('Inscrito en: ${ev.titulo}','event_available')">
+        <div class="event-date">
+          <div class="event-day">${ev.dia}</div>
+          <div class="event-month">${ev.mes}</div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span class="tipo-badge tipo-${ev.tipo}">${ev.tipo}</span>
+          </div>
+          <div class="text-title-sm" style="margin-bottom:6px;line-height:1.4">${ev.titulo}</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:5px;color:var(--color-outline)">
+              <span class="material-symbols-outlined" style="font-size:14px">location_on</span>
+              <span class="text-body-sm">${ev.lugar}</span>
+              <span class="material-symbols-outlined" style="font-size:14px;margin-left:4px">schedule</span>
+              <span class="text-body-sm">${ev.hora}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;color:var(--color-outline)">
+              <span class="material-symbols-outlined" style="font-size:14px">groups</span>
+              <span class="text-body-sm">por ${ev.organizador}</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn-icon" style="flex-shrink:0" onclick="event.stopPropagation();this.querySelector('span').classList.toggle('icon-filled');showToast(this.querySelector('span').classList.contains('icon-filled')?'Evento guardado':'Eliminado','bookmark')" aria-label="Guardar evento">
+          <span class="material-symbols-outlined ${ev.guardado?'icon-filled':''}">bookmark${ev.guardado?'':' _border'}</span>
+        </button>
+      </div>`;
+    });
+  </script>
+</body>
+</html>

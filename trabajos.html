@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DGV Chile — Trabajos</title>
+  <meta name="theme-color" content="#131313">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    .filters-row { display:flex; gap:8px; overflow-x:auto; padding:12px 16px 4px; scrollbar-width:none; }
+    .filters-row::-webkit-scrollbar { display:none; }
+    .job-list { padding:0 16px; }
+    .job-card { background:var(--color-surface-container-low); border:1px solid var(--color-outline-variant); border-radius:14px; padding:14px; margin-bottom:10px; display:flex; gap:12px; cursor:pointer; transition:border-color .15s; }
+    .job-card:hover { border-color:var(--color-primary); }
+    .job-logo { width:46px; height:46px; background:var(--color-surface-container-high); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+    .job-body { flex:1; min-width:0; }
+    .job-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+    .stats-bar { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:12px 16px; margin-bottom:4px; }
+    .stat-pill { background:var(--color-surface-container); border:1px solid var(--color-outline-variant); border-radius:10px; padding:10px; text-align:center; }
+    .stat-num { font-size:18px; font-weight:700; color:var(--color-primary); }
+    .stat-label { font-size:10px; color:var(--color-outline); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <span class="top-header-title">Trabajos</span>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn-icon" aria-label="Filtros avanzados">
+        <span class="material-symbols-outlined">tune</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Buscador -->
+    <div style="padding:12px 16px 0">
+      <div class="search-wrapper">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="search" class="search-bar" placeholder="Buscar empleos, empresas...">
+      </div>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div class="stats-bar">
+      <div class="stat-pill">
+        <div class="stat-num">800+</div>
+        <div class="stat-label">Empleos</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Empresas</div>
+      </div>
+      <div class="stat-pill">
+        <div class="stat-num">68%</div>
+        <div class="stat-label">Remoto</div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-row" id="filters-row">
+      <button class="chip active" onclick="filterJobs(this,'todos')">Todos</button>
+      <button class="chip" onclick="filterJobs(this,'Remoto')">Remoto</button>
+      <button class="chip" onclick="filterJobs(this,'Presencial')">Presencial</button>
+      <button class="chip" onclick="filterJobs(this,'Híbrido')">Híbrido</button>
+      <button class="chip" onclick="filterJobs(this,'Full time')">Full time</button>
+      <button class="chip" onclick="filterJobs(this,'Freelance')">Freelance</button>
+    </div>
+
+    <!-- Lista de trabajos -->
+    <div class="job-list" id="job-list"></div>
+  </main>
+
+  <div id="bottom-nav" data-page="trabajos"></div>
+  <script src="js/app.js"></script>
+  <script>
+    let currentFilter = 'todos';
+
+    function renderJobs(jobs) {
+      const list = document.getElementById('job-list');
+      list.innerHTML = jobs.map(job => `
+        <div class="job-card" onclick="window.location='trabajo-detalle.html?id=${job.id}'">
+          <div class="job-logo">${job.logo}</div>
+          <div class="job-body">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+              <div>
+                ${job.destacado ? `<span class="badge badge-gold" style="margin-bottom:4px;display:inline-block">⭐ Destacado</span><br>` : ''}
+                <div class="text-title-sm">${job.titulo}</div>
+                <div class="text-body-sm text-muted" style="margin-top:2px">${job.empresa}</div>
+              </div>
+              <button class="btn-icon" style="width:32px;height:32px;font-size:18px;flex-shrink:0"
+                onclick="event.stopPropagation();this.querySelector('span').classList.toggle('icon-filled');showToast('Guardado','bookmark')" aria-label="Guardar">
+                <span class="material-symbols-outlined" style="font-size:18px">bookmark_border</span>
+              </button>
+            </div>
+            <div class="job-meta">
+              <span class="chip" style="padding:4px 10px;font-size:11px">
+                <span class="material-symbols-outlined" style="font-size:12px">public</span> ${job.modalidad}
+              </span>
+              <span class="chip" style="padding:4px 10px;font-size:11px">${job.tipo}</span>
+              <span class="chip" style="padding:4px 10px;font-size:11px">
+                <span class="material-symbols-outlined" style="font-size:12px">location_on</span> ${job.ubicacion}
+              </span>
+            </div>
+            <div class="text-label text-muted" style="margin-top:8px">${job.publicado}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterJobs(btn, filter) {
+      document.querySelectorAll('#filters-row .chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = filter;
+      const filtered = filter === 'todos'
+        ? DATA.empleos
+        : DATA.empleos.filter(j => j.modalidad === filter || j.tipo === filter);
+      renderJobs(filtered);
+    }
+
+    renderJobs(DATA.empleos);
+
+    // Búsqueda en tiempo real
+    document.querySelector('.search-bar').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      const filtered = DATA.empleos.filter(j =>
+        j.titulo.toLowerCase().includes(q) ||
+        j.empresa.toLowerCase().includes(q) ||
+        j.modalidad.toLowerCase().includes(q)
+      );
+      renderJobs(filtered);
+    });
+  </script>
+</body>
+</html>

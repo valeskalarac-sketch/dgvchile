@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DGV Chile — Comunidad</title>
+  <meta name="theme-color" content="#131313">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    .member-card { background:var(--color-surface-container-low); border:1px solid var(--color-outline-variant); border-radius:14px; padding:14px; display:flex; align-items:center; gap:12px; margin-bottom:10px; cursor:pointer; transition:border-color .15s; }
+    .member-card:hover { border-color:var(--color-primary); }
+    .member-row { display:flex; gap:10px; overflow-x:auto; padding:4px 16px 8px; scrollbar-width:none; }
+    .member-row::-webkit-scrollbar { display:none; }
+    .member-mini { flex-shrink:0; width:120px; background:var(--color-surface-container-low); border:1px solid var(--color-outline-variant); border-radius:12px; padding:12px; text-align:center; cursor:pointer; }
+    .community-tabs { display:flex; gap:0; padding:0 16px; border-bottom:1px solid var(--color-outline-variant); margin-bottom:16px; }
+    .c-tab { padding:12px 16px; font-size:13px; font-weight:600; color:var(--color-outline); cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; white-space:nowrap; }
+    .c-tab.active { color:var(--color-primary); border-bottom-color:var(--color-primary); }
+    .projects-masonry { column-count:2; column-gap:10px; padding:0 16px; }
+    .masonry-item { break-inside:avoid; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <span class="top-header-title">Comunidad</span>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn-icon" aria-label="Buscar">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Búsqueda -->
+    <div style="padding:12px 16px 0">
+      <div class="search-wrapper">
+        <span class="material-symbols-outlined search-icon">search</span>
+        <input type="search" class="search-bar" placeholder="Buscar diseñadores, proyectos...">
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="community-tabs" style="margin-top:12px">
+      <div class="c-tab active" onclick="showSection('feed',this)">Proyectos</div>
+      <div class="c-tab" onclick="showSection('miembros',this)">Diseñadores</div>
+      <div class="c-tab" onclick="showSection('tendencias',this)">Tendencias</div>
+    </div>
+
+    <!-- Sección: Proyectos -->
+    <div id="sec-feed">
+      <!-- Filtros categorías -->
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none">
+        <button class="chip active" onclick="activateChip(this)">Todos</button>
+        <button class="chip" onclick="activateChip(this)">Branding</button>
+        <button class="chip" onclick="activateChip(this)">UX/UI</button>
+        <button class="chip" onclick="activateChip(this)">Motion</button>
+        <button class="chip" onclick="activateChip(this)">Editorial</button>
+        <button class="chip" onclick="activateChip(this)">Packaging</button>
+      </div>
+      <div class="projects-masonry" id="masonry-grid"></div>
+    </div>
+
+    <!-- Sección: Diseñadores -->
+    <div id="sec-miembros" style="display:none;padding:0 16px">
+      <div class="section-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-outline);margin-bottom:12px">✦ Diseñadores destacados</div>
+      <div id="members-list"></div>
+      <div class="section-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-outline);margin:16px 0 12px">Nuevos en la comunidad</div>
+      <div class="member-row" id="new-members"></div>
+    </div>
+
+    <!-- Sección: Tendencias -->
+    <div id="sec-tendencias" style="display:none;padding:0 16px">
+      <div class="section-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-outline);margin-bottom:12px">🔥 Lo más popular esta semana</div>
+      <div id="trending-list"></div>
+    </div>
+  </main>
+
+  <div id="bottom-nav" data-page="comunidad"></div>
+  <script src="js/app.js"></script>
+  <script>
+    // Masonry de proyectos
+    const masonry = document.getElementById('masonry-grid');
+    DATA.proyectos.forEach((p, i) => {
+      const heights = ['160px','200px','180px','220px','170px','190px'];
+      masonry.innerHTML += `
+      <div class="masonry-item">
+        <a href="proyecto.html?id=${p.id}" style="display:block;border-radius:12px;overflow:hidden;border:1px solid var(--color-outline-variant);text-decoration:none">
+          <div style="height:${heights[i]};overflow:hidden">
+            <img src="${p.img}" alt="${p.titulo}" style="width:100%;height:100%;object-fit:cover;transition:transform .3s"
+                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          </div>
+          <div style="padding:8px 10px;background:var(--color-surface-container-low)">
+            <div class="text-title-sm" style="font-size:12px;margin-bottom:4px">${p.titulo}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center;gap:4px">
+                <img src="${avatarUrl(p.autor,20)}" style="width:16px;height:16px;border-radius:50%">
+                <span style="font-size:10px;color:var(--color-outline)">${p.autor}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:3px;color:var(--color-outline)">
+                <span class="material-symbols-outlined icon-filled" style="font-size:12px;color:#ff6b6b">favorite</span>
+                <span style="font-size:10px">${p.likes}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>`;
+    });
+
+    // Lista de miembros
+    const membersList = document.getElementById('members-list');
+    DATA.miembros.forEach(m => {
+      membersList.innerHTML += `
+      <div class="member-card" onclick="window.location='perfil.html'">
+        <img src="${avatarUrl(m.seed,48)}" class="avatar avatar-md" alt="${m.name}">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="text-title-sm">${m.name}</span>
+            ${m.verificado ? `<span class="material-symbols-outlined icon-filled" style="font-size:14px;color:var(--color-primary)">verified</span>` : ''}
+          </div>
+          <div class="text-body-sm text-muted">${m.role}</div>
+          <div style="display:flex;gap:12px;margin-top:6px">
+            <span style="font-size:11px;color:var(--color-secondary)"><strong>${m.proyectos}</strong> proyectos</span>
+            <span style="font-size:11px;color:var(--color-secondary)"><strong>${m.seguidores}</strong> seguidores</span>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();this.textContent='Siguiendo';this.classList.remove('btn-outline');this.classList.add('btn-secondary');showToast('Siguiendo a '+this.closest('.member-card').querySelector('.text-title-sm').textContent,'person_add')">Seguir</button>
+      </div>`;
+    });
+
+    // Nuevos miembros
+    const newMembers = document.getElementById('new-members');
+    ['pedro','clara','javier','camila','rodrigo'].forEach(seed => {
+      newMembers.innerHTML += `
+      <div class="member-mini" onclick="window.location='perfil.html'">
+        <img src="${avatarUrl(seed,48)}" class="avatar avatar-md" style="margin:0 auto 8px" alt="${seed}">
+        <div style="font-size:12px;font-weight:600;color:var(--color-on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${seed.charAt(0).toUpperCase()+seed.slice(1)}</div>
+        <div style="font-size:10px;color:var(--color-outline);margin-top:2px">Nuevo</div>
+      </div>`;
+    });
+
+    // Tendencias
+    const trending = document.getElementById('trending-list');
+    const tags = ['#branding','#uxui','#tipografia','#packaging','#motiondesign','#identidadvisual'];
+    tags.forEach((tag, i) => {
+      trending.innerHTML += `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--color-surface-container-low);border:1px solid var(--color-outline-variant);border-radius:12px;margin-bottom:8px;cursor:pointer"
+           onclick="showToast('Explorando '+tag,'tag')">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:16px;font-weight:700;color:var(--color-outline)">${String(i+1).padStart(2,'0')}</span>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--color-primary)">${tag}</div>
+            <div style="font-size:11px;color:var(--color-outline)">${Math.floor(Math.random()*200+50)} publicaciones esta semana</div>
+          </div>
+        </div>
+        <span class="material-symbols-outlined" style="color:var(--color-outline)">chevron_right</span>
+      </div>`;
+    });
+
+    function showSection(id, el) {
+      ['feed','miembros','tendencias'].forEach(s => {
+        document.getElementById('sec-'+s).style.display = 'none';
+      });
+      document.querySelectorAll('.c-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('sec-'+id).style.display = 'block';
+      el.classList.add('active');
+    }
+
+    function activateChip(el) {
+      document.querySelectorAll('#sec-feed .chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+</body>
+</html>

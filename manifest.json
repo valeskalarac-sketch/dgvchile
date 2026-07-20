@@ -1,0 +1,14 @@
+{
+  "name": "DGV Chile — Comunidad Creativa",
+  "short_name": "DGV Chile",
+  "description": "La comunidad donde el diseño conecta. Encuentra trabajo, comparte tu talento y aprende.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#131313",
+  "theme_color": "#131313",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
