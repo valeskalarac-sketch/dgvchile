@@ -72,6 +72,7 @@
   </main>
 
   <div id="bottom-nav" data-page="trabajos"></div>
+  <script src="js/supabase.js"></script>
   <script src="js/app.js"></script>
   <script>
     let currentFilter = 'todos';
@@ -119,6 +120,19 @@
     }
 
     renderJobs(DATA.empleos);
+    // Intentar cargar desde Supabase
+    API.getOfertas().then(ofertas => {
+      if (ofertas && ofertas.length) {
+        const mapped = ofertas.map(o => ({
+          id: o.id, empresa: o.empresa_nombre, logo: '🟡',
+          titulo: o.titulo, tipo: o.tipo.replace('_',' '),
+          modalidad: o.modalidad, ubicacion: o.ubicacion||'Chile',
+          publicado: new Date(o.created_at).toLocaleDateString('es-CL'),
+          destacado: o.destacado
+        }));
+        renderJobs(mapped);
+      }
+    }).catch(() => {});
 
     // Búsqueda en tiempo real
     document.querySelector('.search-bar').addEventListener('input', e => {
