@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DGV Chile — Pago exitoso</title>
+  <meta name="theme-color" content="#131313">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    body { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:32px 24px; }
+    .success-icon { width:80px; height:80px; border-radius:50%; background:rgba(48,209,88,.15); border:2px solid #30d158; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; animation:popIn .4s cubic-bezier(.175,.885,.32,1.275) forwards; }
+    .error-icon   { width:80px; height:80px; border-radius:50%; background:rgba(255,59,48,.15);  border:2px solid #ff3b30; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; }
+    @keyframes popIn { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+    .confetti { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:hidden; z-index:0; }
+    .confetti-piece { position:absolute; width:8px; height:12px; border-radius:2px; animation:fall linear forwards; }
+    @keyframes fall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+  </style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <!-- Estado: verificando -->
+  <div id="state-loading">
+    <div style="font-size:48px;margin-bottom:16px;animation:spin 1s linear infinite">⟳</div>
+    <div class="text-headline">Verificando tu pago...</div>
+    <p class="text-body-md text-muted" style="margin-top:8px">Esto toma solo un momento</p>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+  </div>
+
+  <!-- Estado: exitoso -->
+  <div id="state-success" style="display:none;position:relative;z-index:1">
+    <div class="success-icon">
+      <span class="material-symbols-outlined icon-filled" style="font-size:40px;color:#30d158">check_circle</span>
+    </div>
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.15em;color:var(--color-primary);margin-bottom:8px">¡Plan Pro activado!</div>
+    <h1 class="text-headline" style="margin-bottom:12px">¡Bienvenida al<br>club de los Pro! ✦</h1>
+    <p class="text-body-md text-muted" style="line-height:1.7;margin-bottom:28px">
+      Tu plan Pro está activo. Tu perfil ya aparece destacado en las búsquedas y tienes acceso a todas las funciones premium.
+    </p>
+
+    <div style="background:var(--color-surface-container-low);border:1px solid var(--color-outline-variant);border-radius:14px;padding:16px;margin-bottom:24px;text-align:left">
+      <div class="text-label text-muted" style="margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em">Lo que tienes ahora</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px"><span class="material-symbols-outlined icon-filled" style="font-size:16px;color:#30d158">check</span><span class="text-body-sm">Perfil destacado en búsquedas</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="material-symbols-outlined icon-filled" style="font-size:16px;color:#30d158">check</span><span class="text-body-sm">Badge ✦ verificado en tu perfil</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="material-symbols-outlined icon-filled" style="font-size:16px;color:#30d158">check</span><span class="text-body-sm">Proyectos ilimitados</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="material-symbols-outlined icon-filled" style="font-size:16px;color:#30d158">check</span><span class="text-body-sm">Estadísticas de perfil en tiempo real</span></div>
+        <div style="display:flex;align-items:center;gap:8px"><span class="material-symbols-outlined icon-filled" style="font-size:16px;color:#30d158">check</span><span class="text-body-sm">Acceso prioritario a nuevas ofertas</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;width:100%">
+      <a href="perfil.html" class="btn btn-primary" style="justify-content:center;padding:14px;font-size:15px">
+        <span class="material-symbols-outlined">person</span> Ver mi perfil Pro ✦
+      </a>
+      <a href="index.html" class="btn btn-secondary" style="justify-content:center">
+        Ir al inicio
+      </a>
+    </div>
+  </div>
+
+  <!-- Estado: error -->
+  <div id="state-error" style="display:none">
+    <div class="error-icon">
+      <span class="material-symbols-outlined icon-filled" style="font-size:40px;color:#ff3b30">error</span>
+    </div>
+    <h1 class="text-headline" style="margin-bottom:12px">Pago no completado</h1>
+    <p class="text-body-md text-muted" style="line-height:1.7;margin-bottom:24px">
+      Tu pago no pudo ser procesado. No se realizó ningún cobro. Puedes intentarlo de nuevo.
+    </p>
+    <div style="display:flex;flex-direction:column;gap:10px;width:100%">
+      <a href="planes.html" class="btn btn-primary" style="justify-content:center;padding:14px">
+        Intentar de nuevo
+      </a>
+      <a href="index.html" class="btn btn-secondary" style="justify-content:center">
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/flow.js"></script>
+  <script>
+    async function verificarPago() {
+      const params = new URLSearchParams(window.location.search);
+      const token  = params.get('token');
+
+      if (!token) { showState('error'); return; }
+
+      try {
+        const result = await Flow.confirmarPago(token);
+        if (result.pagado) {
+          showState('success');
+          lanzarConfetti();
+        } else {
+          showState('error');
+        }
+      } catch(e) {
+        showState('error');
+      }
+    }
+
+    function showState(state) {
+      document.getElementById('state-loading').style.display = 'none';
+      document.getElementById('state-success').style.display = state === 'success' ? 'block' : 'none';
+      document.getElementById('state-error').style.display   = state === 'error'   ? 'block' : 'none';
+    }
+
+    function lanzarConfetti() {
+      const colors = ['#ffba20','#30d158','#fff','#ff9500','#e5a922'];
+      for (let i = 0; i < 60; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.cssText = `
+          left:${Math.random()*100}%;
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          animation-duration:${1.5+Math.random()*2}s;
+          animation-delay:${Math.random()*.5}s;
+          transform:rotate(${Math.random()*360}deg);
+          opacity:${0.7+Math.random()*.3}`;
+        document.getElementById('confetti').appendChild(el);
+      }
+      setTimeout(() => document.getElementById('confetti').innerHTML = '', 4000);
+    }
+
+    // Si viene de Flow, verificar; si es demo, mostrar éxito
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('demo') === '1') {
+      showState('success'); lanzarConfetti();
+    } else if (params.get('token')) {
+      verificarPago();
+    } else {
+      showState('error');
+    }
+  </script>
+</body>
+</html>
