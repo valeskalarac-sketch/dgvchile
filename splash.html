@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DGV Chile</title>
-  <meta name="theme-color" content="#0B0B0B">
+  <meta name="theme-color" content="#FAFAFA">
   <link rel="stylesheet" href="css/tokens.css">
   <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bricolage+Grotesque:opsz,wght@12..60,400;12..60,700;12..60,900&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: #0B0B0B;
+      background: #FAFAFA;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -41,7 +41,7 @@
     .glow-bg {
       position: fixed;
       width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(229,169,34,.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(229,169,34,.18) 0%, transparent 70%);
       border-radius: 50%;
       top: 50%; left: 50%;
       transform: translate(-50%,-50%);
@@ -68,10 +68,10 @@
     .logo-dgv {
       font-family: 'Permanent Marker', cursive;
       font-size: 88px;
-      color: #ffffff;
+      color: #111111;
       line-height: .9;
       letter-spacing: 6px;
-      text-shadow: 0 0 60px rgba(229,169,34,.3);
+      text-shadow: 0 2px 20px rgba(229,169,34,.2);
       position: relative;
     }
 
@@ -132,7 +132,7 @@
       font-family: 'Bricolage Grotesque', sans-serif;
       font-size: 11px;
       letter-spacing: 4px;
-      color: rgba(255,255,255,.5);
+      color: rgba(0,0,0,.4);
       text-transform: uppercase;
       animation: fade-in 1s ease .8s both;
     }
@@ -148,7 +148,7 @@
       font-family: 'Bricolage Grotesque', sans-serif;
       font-size: 18px;
       font-weight: 300;
-      color: rgba(255,255,255,.85);
+      color: rgba(0,0,0,.75);
       line-height: 1.5;
     }
     .tagline-main strong { color: #E5A922; font-weight: 700; }
@@ -156,7 +156,7 @@
     /* Loading bar */
     .loading-bar {
       width: 200px; height: 2px;
-      background: rgba(255,255,255,.1);
+      background: rgba(0,0,0,.08);
       border-radius: 1px;
       margin-top: 48px;
       overflow: hidden;
@@ -189,13 +189,13 @@
     .btn-splash-primary:hover { transform:translateY(-2px); box-shadow:0 8px 40px rgba(229,169,34,.5); }
     .btn-splash-secondary {
       padding: 14px; border-radius: 999px;
-      background: transparent; color: #fff;
+      background: transparent; color: #111;
       font-family: 'Bricolage Grotesque', sans-serif;
       font-size: 14px; font-weight: 500;
-      border: 1.5px solid rgba(255,255,255,.2);
+      border: 1.5px solid rgba(0,0,0,.15);
       cursor: pointer; transition: border-color .15s;
     }
-    .btn-splash-secondary:hover { border-color:rgba(255,255,255,.5); }
+    .btn-splash-secondary:hover { border-color:rgba(0,0,0,.4); }
 
     /* Versión piloto badge */
     .pilot-badge {

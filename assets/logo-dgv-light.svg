@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" role="img" aria-label="DGV Chile Comunidad Creativa">
+  <defs>
+    <filter id="roughen">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="brush-stroke">
+      <feTurbulence type="turbulence" baseFrequency="0.02 0.08" numOctaves="3" result="turbulence"/>
+      <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <!-- Líneas decorativas izquierda -->
+  <g fill="#111111" opacity="0.7">
+    <rect x="8"  y="58" width="28" height="3" rx="1.5" transform="rotate(-1,22,59)"/>
+    <rect x="10" y="65" width="24" height="3" rx="1.5" transform="rotate(1,22,66)"/>
+    <rect x="8"  y="72" width="28" height="3" rx="1.5" transform="rotate(-0.5,22,73)"/>
+    <circle cx="15" cy="46" r="2.5"/>
+    <circle cx="28" cy="90" r="2.5"/>
+  </g>
+
+  <!-- Líneas decorativas derecha -->
+  <g fill="#111111" opacity="0.7">
+    <rect x="364" y="58" width="28" height="3" rx="1.5" transform="rotate(1,378,59)"/>
+    <rect x="366" y="65" width="24" height="3" rx="1.5" transform="rotate(-1,378,66)"/>
+    <rect x="364" y="72" width="28" height="3" rx="1.5" transform="rotate(0.5,378,73)"/>
+    <circle cx="385" cy="46" r="2.5"/>
+    <circle cx="372" cy="90" r="2.5"/>
+  </g>
+
+  <!-- Diamantes dorados -->
+  <g fill="#E5A922">
+    <path d="M105 62 L109 67 L105 72 L101 67 Z"/>
+    <path d="M119 59 L122 63 L119 67 L116 63 Z"/>
+    <path d="M198 62 L202 67 L198 72 L194 67 Z"/>
+    <path d="M212 59 L215 63 L212 67 L209 63 Z"/>
+    <path d="M291 62 L295 67 L291 72 L287 67 Z"/>
+    <path d="M305 59 L308 63 L305 67 L302 63 Z"/>
+  </g>
+
+  <!-- Letras DGV negras -->
+  <text x="200" y="108" text-anchor="middle"
+    font-family="'Permanent Marker','Bricolage Grotesque',Georgia,serif"
+    font-size="92" font-weight="900" fill="#111111"
+    letter-spacing="6" filter="url(#roughen)" style="font-style:italic">DGV</text>
+
+  <!-- Trazo dorado detrás de CHILE -->
+  <g transform="translate(80, 118)">
+    <path d="M10 8 C30 2, 180 0, 240 6 C245 14, 240 28, 235 32 C180 38, 28 36, 8 30 C3 24, 4 14, 10 8 Z"
+          fill="#E5A922" opacity="0.95" filter="url(#brush-stroke)"/>
+    <path d="M15 10 C40 6, 170 4, 228 9 C230 11, 229 14, 228 16 C170 12, 40 14, 15 18 Z"
+          fill="#F1B81A" opacity="0.3"/>
+    <path d="M0 18 C5 14, 12 12, 10 8 C6 8, 0 14, 0 18 Z" fill="#E5A922" opacity="0.6"/>
+    <path d="M240 6 C248 8, 252 14, 248 20 C244 18, 238 14, 240 6 Z" fill="#E5A922" opacity="0.6"/>
+  </g>
+
+  <!-- CHILE negro -->
+  <text x="200" y="148" text-anchor="middle"
+    font-family="'Bricolage Grotesque',Impact,sans-serif"
+    font-size="38" font-weight="900" fill="#000000" letter-spacing="8">CHILE</text>
+
+  <!-- Líneas decorativas subtítulo -->
+  <g fill="#999999" opacity="0.6">
+    <rect x="52" y="167" width="18" height="2" rx="1"/>
+    <rect x="330" y="167" width="18" height="2" rx="1"/>
+  </g>
+
+  <!-- COMUNIDAD CREATIVA -->
+  <text x="200" y="172" text-anchor="middle"
+    font-family="'Bricolage Grotesque',Arial,sans-serif"
+    font-size="12" font-weight="500" fill="#555555" letter-spacing="4">C◦MUNIDAD CREATIVA</text>
+</svg>

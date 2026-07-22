@@ -6,7 +6,7 @@
   font-family: 'Permanent Marker', 'Bricolage Grotesque', cursive;
   font-weight: 900;
   letter-spacing: 4px;
-  color: #ffffff;
+  color: #111111;
   font-size: 28px;
   line-height: 1;
   display: inline-block;
@@ -54,33 +54,33 @@
 }
 
 :root {
-  /* Colores principales */
-  --color-background:        #131313;
-  --color-surface:           #131313;
-  --color-surface-container-low:    #1c1b1b;
-  --color-surface-container:       #201f1f;
-  --color-surface-container-high:  #2a2a2a;
-  --color-surface-container-highest: #353534;
-  --color-surface-dim:       #0e0e0e;
-  --color-surface-bright:    #393939;
+  /* Colores principales — Modo Claro */
+  --color-background:              #FAFAFA;
+  --color-surface:                 #FFFFFF;
+  --color-surface-container-low:   #FFFFFF;
+  --color-surface-container:       #F5F5F5;
+  --color-surface-container-high:  #EFEFEF;
+  --color-surface-container-highest:#E8E8E8;
+  --color-surface-dim:             #F0F0F0;
+  --color-surface-bright:          #FFFFFF;
 
-  /* Dorado DGV */
-  --color-primary:           #ffba20;
-  --color-primary-container: #ffb800;
-  --color-primary-fixed-dim: #ffba20;
-  --color-on-primary:        #412d00;
-  --color-on-primary-container: #6b4c00;
+  /* Dorado DGV — se mantiene como acento */
+  --color-primary:               #D4940A;
+  --color-primary-container:     #E5A922;
+  --color-primary-fixed-dim:     #F1B81A;
+  --color-on-primary:            #FFFFFF;
+  --color-on-primary-container:  #FFFFFF;
 
   /* Texto */
-  --color-on-background:     #e5e2e1;
-  --color-on-surface:        #e5e2e1;
-  --color-on-surface-variant:#d5c4ab;
-  --color-secondary:         #c6c6c7;
-  --color-outline:           #9e8f78;
-  --color-outline-variant:   #514532;
+  --color-on-background:         #111111;
+  --color-on-surface:            #111111;
+  --color-on-surface-variant:    #444444;
+  --color-secondary:             #555555;
+  --color-outline:               #999999;
+  --color-outline-variant:       #E0E0E0;
 
   /* Bordes */
-  --border-brutalist:        1px solid #2a2a2a;
+  --border-brutalist:            1px solid #E8E8E8;
 
   /* Tipografía */
   --font-main: 'Bricolage Grotesque', sans-serif;
